@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+        table td {
+            border: 1px solid #ccc;
+            height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="num1">行：</label>
+    <input type="text" id="num1">
+    <label for="num2">列：</label>
+    <input type="text" id="num2">
+    <input type="button" value="生成" id="btn">
+
+    <table>
+        <!-- <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody> -->
+    </table>
+
+    <script>
+        var btn = document.querySelector('#btn');
+        var table = document.querySelector('table');
+
+        btn.onclick = function () {
+            var row = num1.value;
+            var col = num2.value;
+
+            if (row && col) {
+                table.innerHTML = '';
+                var tbody = document.createElement('tbody');
+
+                for (var i = 0; i < row; i++) {
+                    var tr = document.createElement('tr');
+
+                    // if (i % 2 === 0) {
+                    //     tr.style.background = 'gray';
+                    // }
+
+                    for (var j = 0; j < col; j++) {
+                        var td = document.createElement('td');
+                        tr.appendChild(td);
+
+                        if (j == col - 1) {
+                            td.innerHTML =
+                                "<input type='button' value='删除' onclick='btn1(this)'/><input type='button' value='复制' onclick='btn2(this)'/>";
+                        } else {
+                            td.innerHTML = 'wklmtt' + i + j;
+                        }
+                    }
+
+                    tbody.appendChild(tr);
+                }
+                table.appendChild(tbody);
+                num1.value = '';
+                num2.value = '';
+            } else {
+                alert('请输入行数和列数');
+            }
+        }
+        // 删除
+        function btn1(obj) {
+            obj.parentNode.parentNode.remove(obj.parentNode);
+            console.log(obj.parentNode);
+        }
+        // 复制 
+        function btn2(obj) {
+            var tr = obj.parentNode.parentNode;
+            var table = tr.parentNode;
+            var y = table.rows.length;
+            var oldRow = tr;
+
+            if (oldRow) {
+                var newRow = oldRow.cloneNode(true);
+                newRow.setAttribute("id", "y-1");
+            }
+            table.appendChild(newRow);
+        }
+    </script>
+</body>
+
+</html>

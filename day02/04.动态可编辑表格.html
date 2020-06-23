@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin-top: 20px;
+            width: 1000px;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+        }
+
+        td {
+            padding: 0;
+            height: 30px;
+        }
+
+        td input {
+            width: 100%;
+            height: 30px;
+            border: none;
+            background-color: #ffc;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="username">姓名</label>
+    <input type="text" id="username" name="username">
+    <label for="age">年龄</label>
+    <input type="text" id="age" name="age">
+    <label for="tel">电话</label>
+    <input type="text" id="tel" name="tel">
+    <label for="qq">QQ号</label>
+    <input type="text" id="qq" name="qq">
+    <button id="btnSave">保存</button>
+    <div class="list">
+        <table id="tableList">
+            <thead>
+                <tr>
+                    <th width="40">序号</th>
+                    <th width="160">姓名</th>
+                    <th width="60">年龄</th>
+                    <th width="160">电话</th>
+                    <th width="160">QQ号</th>
+                    <th width="150">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td>1</td>
+                    <td>张三</td>
+                    <td>18</td>
+                    <td>187876</td>
+                    <td>238687</td>
+                    <td>
+                        <button>删除</button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var btnSave = document.querySelector('#btnSave');
+
+        var username = document.querySelector('#username');
+        var age = document.querySelector('#age');
+        var tel = document.querySelector('#tel');
+        var qq = document.querySelector('#qq');
+
+        var tbody = document.querySelector('tbody');
+        var index = 0;
+        btnSave.onclick = function () {
+            index++;
+
+            var tr = document.createElement('tr');
+            tr.innerHTML = `<td>${index}</td>
+                    <td>${username.value}</td>
+                    <td>${age.value}</td>
+                    <td>${tel.value}</td>
+                    <td>${qq.value}</td>
+                    <td>
+                        <button>上移</button>  <button>下移</button>  <button>删除</button>
+                    </td>`
+            tbody.appendChild(tr);
+        }
+        // 事件委托给 td 添加点击事件
+        tbody.onclick = function (e) {
+            var evt = e.target;
+
+            if (evt !== evt.parentNode.firstElementChild && evt !== evt.parentNode.lastElementChild && evt.tagName
+                .toLowerCase() !== 'button') {
+                //   input元素可以编辑
+                var input = document.createElement('input');
+                input.value = evt.innerHTML;
+                evt.innerHTML = '';
+                evt.appendChild(input);
+                input.focus(); //马上获取焦点
+
+                input.onblur = function () {
+                    evt.innerHTML = input.value;
+                }
+            }
+            var parent = evt.parentNode.parentNode;
+            // 删除按钮的功能
+            if (evt.innerHTML === '删除') {
+
+                var res = confirm('你确认要删除吗？')
+                if (res) {
+                    parent.remove();
+                }
+            }
+
+            //上移
+            if (evt.innerHTML === '上移') {
+                if (parent.previousElementSibling == null) {
+                    alert('已经是第一行了')
+                } else {
+                    tbody.insertBefore(parent, parent.previousElementSibling)
+                }
+            }
+
+            //下移
+            if (evt.innerHTML === '下移') {
+                if (parent.nextElementSibling == null) {
+                    alert('已经是最后一行了')
+                } else {
+                    tbody.insertBefore(parent.nextElementSibling, parent)
+                }
+            }
+
+        }
+    </script>
+</body>
+
+</html>

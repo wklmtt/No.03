@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box"></div>
+    <script>
+        function move() {
+            var Box = document.getElementById('box'),
+                disX = 0,
+                disY = 0;
+            var browserWidth = document.documentElement.clientWidth,
+                browserHeight = document.documentElement.clientHeight,
+                boxWidth = document.getElementById('box').offsetHeight,
+                boxHeight = document.getElementById('box').offsetWidth;
+            Box.onmousedown = function (e) {
+                var e = e || window.event;
+                disX = e.clientX - this.offsetLeft;
+                disY = e.clientY - this.offsetTop;
+                document.onmousemove = function (e) {
+                    var e = e || window.event;
+                    Box.style.left = (e.clientX - disX) + 'px';
+                    if ((e.clientX - disX) <= 0) {
+                        Box.style.left = 0;
+                    } else if ((boxWidth - disX + e.clientX) >= browserWidth) {
+                        Box.style.left = browserWidth - boxWidth + "px";
+                    }
+                    Box.style.top = (e.clientY - disY) + 'px';
+                    if ((e.clientY - disY) <= 0) {
+                        Box.style.top = 0;
+                    } else if ((boxHeight - disY + e.clientY) >= browserHeight) {
+                        Box.style.top = browserHeight - boxHeight + "px";
+                    }
+                };
+
+                document.onmouseup = function () {
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+                return false;
+            };
+        }
+        move();
+    </script>
+</body>
+
+</html>
